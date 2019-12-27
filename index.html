@@ -2,40 +2,200 @@
 <html lang="en">
 
 <head>
+
     <style>
-        textarea {
+        body {
+            font-family: Open Sans, Arial, Helvetica, sans-serif;
+        }
+        
+        textarea,
+        input,
+        select {
+            font-family: Open Sans, Arial, Helvetica, sans-serif;
+        }
+        /* textarea {
             font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
             font-size: medium;
             font-weight: 600;
+        } */
+        
+        .collaboration-wrapper {
+            position: fixed;
+            right: 15px;
+            bottom: 15px;
+        }
+        
+        .collaboration-img {
+            height: 80px;
+            width: 80px;
+            z-index: 2;
+            position: relative;
+            cursor: pointer;
+            -webkit-app-region: no-drag;
+        }
+        
+        .collaboration-img img {
+            height: 80px;
+            width: 80px;
+            -webkit-box-shadow: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+        
+        .icon-first,
+        .icon-second,
+        .icon-third {
+            position: absolute;
+            right: 23px;
+            bottom: 15px;
+            width: 40px;
+            height: 40px;
+            z-index: 1;
+            cursor: pointer;
+            transition: all 0.3s ease-in 0s;
+            -webkit-box-shadow: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+        }
+        
+        .icon-first img,
+        .icon-second img,
+        .icon-third img {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .icon-1 {
+            bottom: 90px;
+        }
+        
+        .icon-2 {
+            bottom: 140px;
+        }
+        
+        .icon-3 {
+            bottom: 190px;
+        }
+        
+        .quick-type-wrapper {
+            right: 155px;
+            bottom: 15px;
+            position: fixed;
+            height: 230px;
+            width: 300px;
+            /* background-color: #cccccc; */
+        }
+        
+        .quick-type-inner {
+            position: absolute;
+            bottom: 0px;
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+        }
+        
+        .quick-type-textarea {
+            -webkit-app-region: no-drag;
+            width: 300px;
+            line-height: 20px;
+            resize: none;
+            padding: 5px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: 400;
+            color: #666666;
+        }
+        
+        .suggestion {
+            width: 100%;
+            border: 0px solid #cccccc;
+            height: 160px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            background-color: #ecebeb;
+            padding-left: 5px;
+        }
+        
+        .suggestion ul {
+            list-style: none;
+            margin: 0px;
+            padding: 0px;
+        }
+        
+        .suggestion ul li {
+            font-size: 14px;
+            margin: 5px 0px;
+        }
+        
+        .suggestion::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .suggestion::-webkit-scrollbar-track {
+            /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
+            background-color: #ffffff;
+        }
+        
+        .suggestion::-webkit-scrollbar-thumb {
+            background-color: #cccccc;
+            /* outline: 1px solid slategrey; */
         }
     </style>
+
 </head>
 
 <body style="-webkit-app-region: drag; overflow: hidden;">
-    <div></div>
+
     <div style="overflow: hidden;" id="host">
-        <div id="icon" style="position: absolute; right: 2px; bottom: 2px; width: 80px;">
-            <img src="./assets/collaborate-icon.png" style="height: 80px; width: 80px; -webkit-app-region: no-drag">
+
+        <div id="icon" class="collaboration-wrapper">
+            <div class="collaboration-img">
+                <img src="./assets/collaborate-icon2.png" class="collaboration-img">
+            </div>
+            <div class="quick-icon icon-first">
+                <img src="./assets/icon-01.png">
+            </div>
+            <div class="quick-icon  icon-second">
+                <img src="./assets/icon-01.png">
+            </div>
+            <div class="quick-icon icon-third">
+                <img src="./assets/icon-01.png">
+            </div>
         </div>
-        <div id="quick-input-host" style="float:left;position: absolute; height: 100%; width: 77%;">
+
+        <div id="quick-input-host" class="quick-type-wrapper">
+
             <div id="quick-host-container" style="visibility: hidden;">
-                <div style="position: absolute; bottom: 40px;">
-                    <div style="color: white; background-color: black; border: 2px solid; overflow: hidden;">
-                        <div id="suggestion" style="width: 100%; border: 2px solid grey;">
-                            <span>Hello<br /></span>
-                            <span>Hello<br /></span>
-                            <span>Hello<br /></span>
-                            <span>Hello<br /></span>
-                        </div>
+
+                <div class="quick-type-inner">
+
+                    <div id="suggestion" class="suggestion">
+                        <ul>
+                            <li>Hello message</li>
+                            <li>Task list</li>
+                            <li>Create Task</li>
+                            <li>All users</li>
+                            <li>Create team</li>
+                            <li>Hello message</li>
+                            <li>Task list</li>
+                            <li>Create Task</li>
+                            <li>All users</li>
+                            <li>Create team</li>
+                        </ul>
                     </div>
-                    <textarea name="quick-input" id="quick-input" cols="100" rows="1"
-                        style="-webkit-app-region: no-drag; width: 300px; line-height: 20px;resize: none;"></textarea>
-                </div>
+
+                    <textarea placeholder="Type tex here..." name="quick-input" id="quick-input" cols="100" rows="1" class="quick-type-textarea"></textarea> </div>
             </div>
         </div>
     </div>
-    <div></div>
+
+
 </body>
+
 <script src="./renderer.js"></script>
 
 </html>

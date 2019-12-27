@@ -22,6 +22,14 @@ window.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         currentWindow.setIgnoreMouseEvents(false, { forward: false });
         quickInputContainer.style['visibility'] = isquckInputEnable ? 'hidden' : 'visible';
+        let quickActionItems = document.getElementsByClassName('quick-icon');
+        for (let i = 0; i < quickActionItems.length; i++) {
+            if (isquckInputEnable) {
+                quickActionItems[i].classList.remove(`icon-${i+1}`);
+            } else {
+                quickActionItems[i].classList.add(`icon-${i+1}`);
+            }
+        }
         isquckInputEnable = !isquckInputEnable;
     }
     quickActionIcon.onmouseenter = () => {
@@ -61,5 +69,3 @@ window.addEventListener('DOMContentLoaded', () => {
         ipc.send('quick-query', query);
     }
 });
-
-
