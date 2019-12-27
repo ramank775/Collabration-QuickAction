@@ -8,7 +8,7 @@ window.addEventListener('mousemove', event => {
 });
 window.addEventListener('DOMContentLoaded', () => {
     const quickActionIcon = document.getElementById('icon');
-    const quickinputHost = document.getElementById('quick-input-host');
+    const quickinputHost = document.getElementById('host');
     const quickInputContainer = document.getElementById('quick-host-container');
     const quickInput = document.getElementById('quick-input');
     let isquckInputEnable = false;
@@ -38,10 +38,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         isquckInputEnable = !isquckInputEnable;
     }
-    quickActionIcon.onmouseenter = () => {
-        currentWindow.setIgnoreMouseEvents(false, { forward: false });
-    }
-
+    
     quickInput.onkeypress = (event) => {
         if (event.shiftKey && event.key == 'Enter') {
             let rows = Number(quickInput.attributes['rows'].value)

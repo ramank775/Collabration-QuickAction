@@ -13,29 +13,29 @@ class QuickQuery {
         this.actions = [];
     }
 }
-const operators = [':', '=', '>', '<', '!=', '>=', '<='].reverse();
+const operators = [' ', ':', '=', '>', '<', '!=', '>=', '<='].reverse();
 const queryParser = (input) => {
-    console.log("parsedQueryInput:", input)
     const lines = input.split('\n');
     const query = new QuickQuery();
-    let parts = lines[0].split(':', 1);
+    let parts = lines[0].split(':', 2);
     query.app = parts[0].trim();
     if (parts.length > 1) {
-        query.command = lines[1].trim();
+        query.command = parts[1].trim();
     }
     for (let index = 1; index < lines.length; index++) {
         const action = new Action();
         query.actions.push(action)
-        parts = lines[index].split(' ', 1);
+        parts = lines[index].split(' ', 2);
         action.instruction = parts[0];
         if (parts.length > 1) {
-            action.operator = findOperator(parts[1])
-            if (action.operator) {
-                parts = parts[1].split(action.operator, 1);
+            const actionSubpart = lines[index].replace(action.instruction,'').trim()
+            action.operator = findOperator(actionSubpart);
+            if (operators.indexOf(action.operator)>-1) {
+                parts = actionSubpart.split(action.operator, 2);
                 action.key = parts[0];
-                action.value = parts[1];
+                action.value = actionSubpart.replace(action.key, '').trim();
             } else {
-                action.key = parts[1]
+                action.key = parts[1];
             }
         }
     }
