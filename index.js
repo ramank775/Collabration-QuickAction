@@ -12,16 +12,16 @@ function createWindow() {
     const display = screen.getPrimaryDisplay();
 
     const windowOptions = {
-        width: 400,
-        height: 400,
+        width: 460,
+        height: 300,
         title: 'Sticky App',
         frame: false,
         transparent: true,
         webPreferences: {
             nodeIntegration: true
         },
-        x: display.workAreaSize.width - 400,
-        y: display.workAreaSize.height - 420
+        x: display.workAreaSize.width - 460,
+        y: display.workAreaSize.height - 305
     };
     console.log(windowOptions);
     win = new BrowserWindow(windowOptions);

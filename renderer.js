@@ -1,5 +1,11 @@
 const { ipcRenderer: ipc, remote } = require('electron');
 const currentWindow = remote.getCurrentWindow();
+window.addEventListener('mousemove', event => {
+    if (event.target === document.documentElement) // <html>-element
+        currentWindow.setIgnoreMouseEvents(true, { forward: true })   // {forward: true} keeps generating MouseEvents
+    else
+        currentWindow.setIgnoreMouseEvents(false, { forward: false })
+});
 window.addEventListener('DOMContentLoaded', () => {
     const quickActionIcon = document.getElementById('icon');
     const quickinputHost = document.getElementById('quick-input-host');
@@ -25,9 +31,9 @@ window.addEventListener('DOMContentLoaded', () => {
         let quickActionItems = document.getElementsByClassName('quick-icon');
         for (let i = 0; i < quickActionItems.length; i++) {
             if (isquckInputEnable) {
-                quickActionItems[i].classList.remove(`icon-${i+1}`);
+                quickActionItems[i].classList.remove(`icon-${i + 1}`);
             } else {
-                quickActionItems[i].classList.add(`icon-${i+1}`);
+                quickActionItems[i].classList.add(`icon-${i + 1}`);
             }
         }
         isquckInputEnable = !isquckInputEnable;

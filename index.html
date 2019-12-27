@@ -7,24 +7,25 @@
         body {
             font-family: Open Sans, Arial, Helvetica, sans-serif;
         }
-        
+
         textarea,
         input,
         select {
             font-family: Open Sans, Arial, Helvetica, sans-serif;
         }
+
         /* textarea {
             font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
             font-size: medium;
             font-weight: 600;
         } */
-        
+
         .collaboration-wrapper {
             position: fixed;
             right: 15px;
             bottom: 15px;
         }
-        
+
         .collaboration-img {
             height: 80px;
             width: 80px;
@@ -33,7 +34,7 @@
             cursor: pointer;
             -webkit-app-region: no-drag;
         }
-        
+
         .collaboration-img img {
             height: 80px;
             width: 80px;
@@ -41,7 +42,7 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
             border-radius: 50%;
         }
-        
+
         .icon-first,
         .icon-second,
         .icon-third {
@@ -57,26 +58,26 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
             border-radius: 50%;
         }
-        
+
         .icon-first img,
         .icon-second img,
         .icon-third img {
             width: 40px;
             height: 40px;
         }
-        
+
         .icon-1 {
             bottom: 90px;
         }
-        
+
         .icon-2 {
             bottom: 140px;
         }
-        
+
         .icon-3 {
             bottom: 190px;
         }
-        
+
         .quick-type-wrapper {
             right: 155px;
             bottom: 15px;
@@ -85,7 +86,7 @@
             width: 300px;
             /* background-color: #cccccc; */
         }
-        
+
         .quick-type-inner {
             position: absolute;
             bottom: 0px;
@@ -96,7 +97,7 @@
             -webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
         }
-        
+
         .quick-type-textarea {
             -webkit-app-region: no-drag;
             width: 300px;
@@ -108,7 +109,7 @@
             font-weight: 400;
             color: #666666;
         }
-        
+
         .suggestion {
             width: 100%;
             border: 0px solid #cccccc;
@@ -119,30 +120,38 @@
             background-color: #ecebeb;
             padding-left: 5px;
         }
-        
+
         .suggestion ul {
             list-style: none;
             margin: 0px;
             padding: 0px;
         }
-        
+
         .suggestion ul li {
             font-size: 14px;
             margin: 5px 0px;
         }
-        
+
         .suggestion::-webkit-scrollbar {
             width: 8px;
         }
-        
+
         .suggestion::-webkit-scrollbar-track {
             /* -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3); */
             background-color: #ffffff;
         }
-        
+
         .suggestion::-webkit-scrollbar-thumb {
             background-color: #cccccc;
             /* outline: 1px solid slategrey; */
+        }
+
+        body {
+            pointer-events: none;
+        }
+
+        .clickable {
+            pointer-events: visible;
         }
     </style>
 
@@ -150,7 +159,7 @@
 
 <body style="-webkit-app-region: drag; overflow: hidden;">
 
-    <div style="overflow: hidden;" id="host">
+    <div style="overflow: hidden;" id="host" class="clickable">
 
         <div id="icon" class="collaboration-wrapper">
             <div class="collaboration-img">
@@ -188,7 +197,9 @@
                         </ul>
                     </div>
 
-                    <textarea placeholder="Type tex here..." name="quick-input" id="quick-input" cols="100" rows="1" class="quick-type-textarea"></textarea> </div>
+                    <textarea placeholder="Type tex here..." name="quick-input" id="quick-input" cols="100" rows="1"
+                        class="quick-type-textarea"></textarea>
+                </div>
             </div>
         </div>
     </div>
