@@ -11,8 +11,9 @@ window.addEventListener('DOMContentLoaded', () => {
     const quickinputHost = document.getElementById('host');
     const quickInputContainer = document.getElementById('quick-host-container');
     const quickInput = document.getElementById('quick-input');
+    const suggestionsList = document.querySelector('.suggestion>ul')
     let isquckInputEnable = false;
-
+    let quickActions = [];
     quickinputHost.onmouseenter = () => {
         if (!isquckInputEnable) {
             currentWindow.setIgnoreMouseEvents(true, { forward: true });
@@ -38,8 +39,10 @@ window.addEventListener('DOMContentLoaded', () => {
         }
         isquckInputEnable = !isquckInputEnable;
     }
-    
+
     quickInput.onkeypress = (event) => {
+        const input = quickInput.value + event.key;
+        suggestions(input);
         if (event.shiftKey && event.key == 'Enter') {
             let rows = Number(quickInput.attributes['rows'].value)
             if (rows < 3) {
@@ -56,6 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
             quickInput.attributes['rows'].value = 1;
             return;
         }
+        
     }
     quickInput.onkeydown = (event) => {
         if (event.key == 'Backspace') {
@@ -71,4 +75,41 @@ window.addEventListener('DOMContentLoaded', () => {
     const sendQuery = (query) => {
         ipc.send('quick-query', query);
     }
+
+    loadQuickActions().then((data) => {
+        quickActions = data;
+    });
+    suggestionsList.onclick = (event) => {
+        quickInput.value = event.target.textContent;
+    }
+    const suggestions = (input) => {
+        const lines = input.split('\n');
+        const lineCount = lines.length;
+        if (lineCount == 1 && lines[0].indexOf(':') == -1) {
+            items = quickActions.filter(item => item.toUpperCase().indexOf(input.toUpperCase()) > -1);
+            let suggestionHtml = items.map(itm => `<li>${itm}</li>`).join(' ')
+            suggestionsList.innerHTML = suggestionHtml;
+            if(!items.length) {
+                document.getElementById('suggestion').style.display = 'none';
+            }else {
+                document.getElementById('suggestion').style.display = '';
+            }
+        }else {
+            document.getElementById('suggestion').style.display = 'none';
+        }
+    }
 });
+
+function loadQuickActions() {
+    return new Promise((resolve, reject) => {
+        try {
+            ipc.send('quick-app-ready');
+            ipc.on('init', (event, args) => {
+                resolve(args);
+            })
+        } catch (error) {
+            reject(error);
+        }
+
+    });
+}

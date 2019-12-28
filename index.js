@@ -42,9 +42,7 @@ function createWindow() {
 function handleIPC() {
     const { queryParser } = require('./queryParser');
     ipcMain.on('quick-app-ready', (event, args) => {
-        event.reply('init', {
-            quickActions: Object.keys(actionMapping).filter(k => typeof k === 'string')
-        })
+        event.reply('init', Object.keys(actionMapping).filter(k => typeof k === 'string'))
     })
     ipcMain.on('quick-query', (event, query) => {
         const parsedQuery = queryParser(query);
