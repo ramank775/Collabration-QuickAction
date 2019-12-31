@@ -11,9 +11,36 @@ window.addEventListener('DOMContentLoaded', () => {
     const quickinputHost = document.getElementById('host');
     const quickInputContainer = document.getElementById('quick-host-container');
     const quickInput = document.getElementById('quick-input');
-    const suggestionsList = document.querySelector('.suggestion>ul')
+    const suggestionsList = document.querySelector('.suggestion>ul');
+    const quickIcons = document.getElementsByClassName('quick-icon');
     let isquckInputEnable = false;
     let quickActions = [];
+    let quickBtnActions = [];
+
+    loadQuickActions().then((data) => {
+        console.log(data);
+        quickActions = data.availableActions;
+        Object.keys(data.quickBtnActions).forEach(btnClass => {
+            const action = data.quickBtnActions[btnClass];
+            quickBtnActions.push(action.query);
+            const quickBtn = document.querySelector(`.${btnClass}`);
+            if (action.icon) {
+                const img = quickBtn.querySelector('img');
+                img.src = action.icon;
+            }
+            quickBtn.onclick = (event) => {
+                const actionIndex = Number(event.target.parentElement.attributes['actionIndex'].value);
+                const query = quickBtnActions[actionIndex]
+                sendQuery(query);
+                hideQuickOptions();
+            }
+        })
+    });
+    document.querySelector('body').onkeydown = (event) => {
+        if(isquckInputEnable && event.key == 'Escape') {
+            hideQuickOptions();
+        }
+    }
     quickinputHost.onmouseenter = () => {
         if (!isquckInputEnable) {
             currentWindow.setIgnoreMouseEvents(true, { forward: true });
@@ -28,16 +55,25 @@ window.addEventListener('DOMContentLoaded', () => {
     quickActionIcon.onclick = (event) => {
         event.preventDefault();
         currentWindow.setIgnoreMouseEvents(false, { forward: false });
-        quickInputContainer.style['visibility'] = isquckInputEnable ? 'hidden' : 'visible';
-        let quickActionItems = document.getElementsByClassName('quick-icon');
-        for (let i = 0; i < quickActionItems.length; i++) {
-            if (isquckInputEnable) {
-                quickActionItems[i].classList.remove(`icon-${i + 1}`);
-            } else {
-                quickActionItems[i].classList.add(`icon-${i + 1}`);
-            }
+        isquckInputEnable ? hideQuickOptions() : showQuickOptions();
+    }
+
+    function showQuickOptions() {
+        quickInputContainer.style['visibility'] = 'visible';
+        let quickActionItems = quickIcons;
+        for (let i = 0; i < quickBtnActions.length; i++) {
+            quickActionItems[i].classList.add(`icon-${i + 1}`);
         }
-        isquckInputEnable = !isquckInputEnable;
+        isquckInputEnable = true;
+    }
+
+    function hideQuickOptions() {
+        quickInputContainer.style['visibility'] = 'hidden';
+        let quickActionItems = quickIcons;
+        for (let i = 0; i < quickBtnActions.length; i++) {
+            quickActionItems[i].classList.remove(`icon-${i + 1}`);
+        }
+        isquckInputEnable = false;
     }
 
     quickInput.onkeypress = (event) => {
@@ -59,7 +95,7 @@ window.addEventListener('DOMContentLoaded', () => {
             quickInput.attributes['rows'].value = 1;
             return;
         }
-        
+
     }
     quickInput.onkeydown = (event) => {
         if (event.key == 'Backspace') {
@@ -76,12 +112,10 @@ window.addEventListener('DOMContentLoaded', () => {
         ipc.send('quick-query', query);
     }
 
-    loadQuickActions().then((data) => {
-        quickActions = data;
-    });
     suggestionsList.onclick = (event) => {
         quickInput.value = event.target.textContent;
     }
+
     const suggestions = (input) => {
         const lines = input.split('\n');
         const lineCount = lines.length;
@@ -89,12 +123,12 @@ window.addEventListener('DOMContentLoaded', () => {
             items = quickActions.filter(item => item.toUpperCase().indexOf(input.toUpperCase()) > -1);
             let suggestionHtml = items.map(itm => `<li>${itm}</li>`).join(' ')
             suggestionsList.innerHTML = suggestionHtml;
-            if(!items.length) {
+            if (!items.length) {
                 document.getElementById('suggestion').style.display = 'none';
-            }else {
+            } else {
                 document.getElementById('suggestion').style.display = '';
             }
-        }else {
+        } else {
             document.getElementById('suggestion').style.display = 'none';
         }
     }

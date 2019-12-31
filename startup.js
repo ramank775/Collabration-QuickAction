@@ -9,11 +9,15 @@ app.on('ready', () => {
                 todo: {
                     exec: (query) => {
                         console.log(query)
-                    }
+                    },
+                    icon: './assets/t1.png'
                 }
             }
         }
     }]
+    app.config = {
+        'quick-app': ['todo']
+    }
     onAppInit(app);
 })
 
